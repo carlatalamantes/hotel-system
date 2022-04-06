@@ -16,11 +16,27 @@ const Controller = {
     });
   },
   create: (req, res) => {
+    const {
+      name,
+      first_lastname,
+      second_lastname,
+      cellphone,
+      email,
+      password,
+    } = req.body;
     const user = new User();
-    let data = req.body;
-    user.create(data).then((results) => {
-      res.send(results);
-    });
+    user
+      .create({
+        name,
+        first_lastname,
+        second_lastname,
+        cellphone,
+        email,
+        password,
+      })
+      .then((results) => {
+        res.status(results.code).json(results.msg);
+      });
   },
   update: (req, res) => {
     const user = new User();
