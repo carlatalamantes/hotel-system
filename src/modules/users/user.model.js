@@ -1,5 +1,9 @@
 const Model = require("../../core/model");
-const { hashPassword } = require("../../core/utils");
+const {
+  hashPassword,
+  comparePassword,
+  generateToken,
+} = require("../../core/utils");
 
 class User extends Model {
   constructor() {
@@ -12,7 +16,7 @@ class User extends Model {
       if (userExists) {
         var err = new Error("Error");
         err.code = 422;
-        err.msg = { message: "Email is already registered" };
+        err.message = { message: "Email is already registered" };
         throw err;
       }
 
@@ -24,7 +28,7 @@ class User extends Model {
         reservations: [],
       });
 
-      return { message: "User was created", code: 201 };
+      return { message: { message: "User was created" }, code: 201 };
     } catch (error) {
       return error;
     }
@@ -36,13 +40,26 @@ class User extends Model {
 
   async login(data) {
     try {
+      var err = new Error("Error");
       const userExists = await this.collection.findOne({ email: data.email });
       if (userExists) {
-        return { message: "kk", code: 200 };
+        let passwordResult = await comparePassword(
+          data.password,
+          userExists.password
+        );
+        if (!passwordResult) {
+          err.code = 403;
+          err.message = {
+            message: "Email and password combination do not match",
+          };
+          throw err;
+        }
+        const token = generateToken(userExists._id);
+
+        return { message: { token }, code: 200 };
       } else {
-        var err = new Error("Error");
         err.code = 422;
-        err.msg = { message: "Email is already registered" };
+        err.message = { message: "Email is already registered" };
         throw err;
       }
     } catch (error) {
