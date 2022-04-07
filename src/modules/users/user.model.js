@@ -50,16 +50,16 @@ class User extends Model {
         if (!passwordResult) {
           err.code = 403;
           err.message = {
-            message: "Email and password combination do not match",
+            message: "Email and password combination does not match",
           };
           throw err;
         }
-        const token = generateToken(userExists._id);
+        const token = generateToken(userExists._id, userExists.role);
 
         return { message: { token }, code: 200 };
       } else {
-        err.code = 422;
-        err.message = { message: "Email is already registered" };
+        err.code = 404;
+        err.message = { message: "Email is not registered" };
         throw err;
       }
     } catch (error) {
