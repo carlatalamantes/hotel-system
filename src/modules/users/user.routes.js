@@ -4,9 +4,9 @@ const { validationRules, validate } = require("./user.validation");
 
 router.get("/", controller.getAll);
 router.get("/:id", controller.getOne);
-router.post("/", validationRules(), validate, controller.create);
-router.post("/:id", controller.update);
+router.post("/", validationRules("create"), validate, controller.create);
+router.post("/login", validationRules("login"), validate, controller.login);
+router.put("/:id", controller.update);
 router.delete("/:id", controller.delete);
-router.post("/login", controller.login);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const Model = require("../../core/model");
+const { hashPassword } = require("../../core/utils");
 
 class User extends Model {
   constructor() {
@@ -14,6 +15,9 @@ class User extends Model {
         err.msg = { message: "Email is already registered" };
         throw err;
       }
+
+      data.password = await hashPassword(data.password);
+
       await this.collection.insertOne({
         ...data,
         role: "user",
@@ -30,7 +34,21 @@ class User extends Model {
 
   delete(id) {}
 
-  login(data) {}
+  async login(data) {
+    try {
+      const userExists = await this.collection.findOne({ email: data.email });
+      if (userExists) {
+        return { message: "kk", code: 200 };
+      } else {
+        var err = new Error("Error");
+        err.code = 422;
+        err.msg = { message: "Email is already registered" };
+        throw err;
+      }
+    } catch (error) {
+      return error;
+    }
+  }
 }
 
 module.exports = User;

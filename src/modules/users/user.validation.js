@@ -1,4 +1,4 @@
-const { body, validationResult, check } = require("express-validator");
+const { validationResult, check } = require("express-validator");
 /* const Schema = {
   _id: "",
   name: "",
@@ -10,33 +10,47 @@ const { body, validationResult, check } = require("express-validator");
   role: "user",
   reservations: [],
 }; */
-const validationRules = () => {
-  return [
-    check("name")
-      .notEmpty()
-      .withMessage("Cannot be empty")
-      .isString()
-      .withMessage("Must be a string"),
-    check("first_lastname")
-      .notEmpty()
-      .withMessage("Cannot be empty")
-      .isString()
-      .withMessage("Must be a string"),
-    check("second_lastname").isString().withMessage("Must be a string"),
-    check("cellphone")
-      .notEmpty()
-      .withMessage("Cannot be empty")
-      .isString()
-      .withMessage("Must be a string"),
-    check("email")
-      .isEmail()
-      .withMessage("Must be a valid email")
-      .notEmpty()
-      .withMessage("Cannot be empty"),
-    check("password")
-      .isLength({ min: 4 })
-      .withMessage("Must be at least 4 chars"),
-  ];
+const validationRules = (method) => {
+  switch (method) {
+    case "create":
+      return [
+        check("name")
+          .notEmpty()
+          .withMessage("Cannot be empty")
+          .isString()
+          .withMessage("Must be a string"),
+        check("first_lastname")
+          .notEmpty()
+          .withMessage("Cannot be empty")
+          .isString()
+          .withMessage("Must be a string"),
+        check("second_lastname").isString().withMessage("Must be a string"),
+        check("cellphone")
+          .notEmpty()
+          .withMessage("Cannot be empty")
+          .isString()
+          .withMessage("Must be a string"),
+        check("email")
+          .isEmail()
+          .withMessage("Must be a valid email")
+          .notEmpty()
+          .withMessage("Cannot be empty"),
+        check("password")
+          .isLength({ min: 4 })
+          .withMessage("Must be at least 4 chars"),
+      ];
+    case "login":
+      return [
+        check("email")
+          .isEmail()
+          .withMessage("Must be a valid email")
+          .notEmpty()
+          .withMessage("Cannot be empty"),
+        check("password").notEmpty().withMessage("Cannot be empty"),
+      ];
+    default:
+      break;
+  }
 };
 
 const validate = (req, res, next) => {

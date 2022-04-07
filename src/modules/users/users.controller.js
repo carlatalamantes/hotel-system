@@ -24,6 +24,7 @@ const Controller = {
       email,
       password,
     } = req.body;
+
     const user = new User();
     user
       .create({
@@ -35,7 +36,7 @@ const Controller = {
         password,
       })
       .then((results) => {
-        res.status(results.code).json(results.msg);
+        res.status(results.code).json(results.message);
       });
   },
   update: (req, res) => {
@@ -54,10 +55,10 @@ const Controller = {
     });
   },
   login: (req, res) => {
+    const { email, password } = req.body;
     const user = new User();
-    let data = req.body;
-    user.login(data).then((results) => {
-      res.send(results);
+    user.login({ email, password }).then((results) => {
+      res.status(results.code).json(results.message);
     });
   },
 };
