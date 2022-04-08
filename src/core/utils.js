@@ -44,9 +44,26 @@ function verifyToken(req, res, next) {
   }
 }
 
+function verifyAdmin(req, res, next) {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    const role = decodedToken.role;
+
+    if (role === "admin") {
+      next();
+    } else {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+  } catch {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+}
+
 module.exports = {
   hashPassword,
   comparePassword,
   generateToken,
   verifyToken,
+  verifyAdmin,
 };

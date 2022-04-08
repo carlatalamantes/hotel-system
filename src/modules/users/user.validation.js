@@ -48,6 +48,30 @@ const validationRules = (method) => {
           .withMessage("Cannot be empty"),
         check("password").notEmpty().withMessage("Cannot be empty"),
       ];
+    case "update":
+      return [
+        check("name")
+          .notEmpty()
+          .withMessage("Cannot be empty")
+          .isString()
+          .withMessage("Must be a string"),
+        check("first_lastname")
+          .notEmpty()
+          .withMessage("Cannot be empty")
+          .isString()
+          .withMessage("Must be a string"),
+        check("second_lastname").isString().withMessage("Must be a string"),
+        check("cellphone")
+          .notEmpty()
+          .withMessage("Cannot be empty")
+          .isString()
+          .withMessage("Must be a string"),
+        check("email")
+          .isEmail()
+          .withMessage("Must be a valid email")
+          .notEmpty()
+          .withMessage("Cannot be empty"),
+      ];
     default:
       break;
   }

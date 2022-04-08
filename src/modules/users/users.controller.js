@@ -40,18 +40,20 @@ const Controller = {
       });
   },
   update: (req, res) => {
-    const user = new User();
-    let data = req.body;
+    const { name, first_lastname, second_lastname, cellphone, email } =
+      req.body;
+    let newData = { name, first_lastname, second_lastname, cellphone, email };
     let id = req.params.id;
-    user.update(id, data).then((results) => {
-      res.send(results);
+    const user = new User();
+    user.update(id, newData).then((results) => {
+      res.status(results.code).json(results.message);
     });
   },
   delete: (req, res) => {
-    const user = new User();
     let id = req.params.id;
+    const user = new User();
     user.delete(id).then((results) => {
-      res.send(results);
+      res.status(results.code).json(results.message);
     });
   },
   login: (req, res) => {

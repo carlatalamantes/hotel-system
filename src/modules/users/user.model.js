@@ -4,6 +4,7 @@ const {
   comparePassword,
   generateToken,
 } = require("../../core/utils");
+const { ObjectId } = require("mongodb");
 
 class User extends Model {
   constructor() {
@@ -34,9 +35,41 @@ class User extends Model {
     }
   }
 
-  update(id, data) {}
+  async update(id, data) {
+    try {
+      const userExists = await this.collection.findOne({ _id: ObjectId(id) });
+      if (!userExists) {
+        var err = new Error("Error");
+        err.code = 404;
+        err.message = { message: "User is not registered" };
+        throw err;
+      }
 
-  delete(id) {}
+      await this.collection.updateOne({ _id: ObjectId(id) }, { $set: data });
+
+      return { message: { message: "User was updated" }, code: 200 };
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async delete(id) {
+    try {
+      const userExists = await this.collection.findOne({ _id: ObjectId(id) });
+      if (!userExists) {
+        var err = new Error("Error");
+        err.code = 404;
+        err.message = { message: "User is not registered" };
+        throw err;
+      }
+
+      await this.collection.remove({ _id: ObjectId(id) });
+
+      return { message: { message: "User was deleted" }, code: 200 };
+    } catch (error) {
+      return error;
+    }
+  }
 
   async login(data) {
     try {
