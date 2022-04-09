@@ -16,25 +16,38 @@ const Controller = {
     });
   },
   create: (req, res) => {
+    const { start_date, end_date, guest_count, total, id_room, id_guest } =
+      req.body;
     const reservation = new Reservation();
-    let data = req.body;
-    reservation.create(data).then((results) => {
-      res.send(results);
-    });
+    reservation
+      .create({ start_date, end_date, guest_count, total, id_room, id_guest })
+      .then((results) => {
+        res.status(results.code).json(results.message);
+      });
   },
   update: (req, res) => {
     const reservation = new Reservation();
-    let data = req.body;
+    const { start_date, end_date, guest_count, total, id_room, id_guest } =
+      req.body;
+    let newData = {
+      start_date,
+      end_date,
+      guest_count,
+      total,
+      id_room,
+      id_guest,
+    };
+
     let id = req.params.id;
-    reservation.update(id, data).then((results) => {
-      res.send(results);
+    reservation.update(id, newData).then((results) => {
+      res.status(results.code).json(results.message);
     });
   },
   delete: (req, res) => {
     const reservation = new Reservation();
     let id = req.params.id;
     reservation.delete(id).then((results) => {
-      res.send(results);
+      res.status(results.code).json(results.message);
     });
   },
 };
