@@ -16,25 +16,61 @@ const Controller = {
     });
   },
   create: (req, res) => {
+    const {
+      name,
+      building,
+      exterior_number,
+      bed_count,
+      guest_count,
+      nightly_price,
+      services,
+    } = req.body;
     const room = new Room();
-    let data = req.body;
-    room.create(data).then((results) => {
-      res.send(results);
-    });
+    room
+      .create({
+        name,
+        building,
+        exterior_number,
+        bed_count,
+        guest_count,
+        nightly_price,
+        services,
+      })
+      .then((results) => {
+        res.status(results.code).json(results.message);
+      });
   },
   update: (req, res) => {
-    const room = new Room();
-    let data = req.body;
+    const {
+      name,
+      building,
+      exterior_number,
+      bed_count,
+      guest_count,
+      nightly_price,
+      services,
+    } = req.body;
+    let newData = {
+      name,
+      building,
+      exterior_number,
+      bed_count,
+      guest_count,
+      nightly_price,
+      services,
+    };
     let id = req.params.id;
-    room.update(id, data).then((results) => {
-      res.send(results);
+    const room = new Room();
+    room.update(id, newData).then((results) => {
+      res.status(results.code).json(results.message);
     });
   },
+
   delete: (req, res) => {
-    const room = new Room();
     let id = req.params.id;
+    const room = new Room();
     room.delete(id).then((results) => {
-      res.send(results);
+      res.status(results.code).json(results.message);
     });
   },
 };
