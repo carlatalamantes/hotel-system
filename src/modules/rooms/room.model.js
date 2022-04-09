@@ -47,12 +47,8 @@ class Room extends Model {
   }
 
   async delete(id) {
-    console.log(id);
-    const roomExists = await this.collection.findOne({ _id: ObjectId(id) });
-    console.log(roomExists);
     try {
       const roomExists = await this.collection.findOne({ _id: ObjectId(id) });
-      console.log(roomExists);
       if (!roomExists) {
         var err = new Error("Error");
         err.code = 404;
