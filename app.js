@@ -5,7 +5,7 @@ const apiRoutes = require("./src/routes");
 const morgan = require("morgan");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
@@ -27,6 +27,8 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 /*
  * Middlewares
  */
+
+app.use(cors());
 
 app.use("/assets", express.static(path.join(__dirname, "public")));
 
