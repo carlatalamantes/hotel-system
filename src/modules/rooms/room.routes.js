@@ -16,7 +16,7 @@ const controller = require("./rooms.controller");
  *         401:
  *           description: Unauthorized
  */
-router.get("/", verifyAdmin, controller.getAll);
+router.get("/", controller.getAll);
 
 /**
  * @swagger
