@@ -65,11 +65,18 @@ const Controller = {
       res.status(results.code).json(results.message);
     });
   },
-
   delete: (req, res) => {
     let id = req.params.id;
     const room = new Room();
     room.delete(id).then((results) => {
+      res.status(results.code).json(results.message);
+    });
+  },
+  uploadPhoto: async (req, res) => {
+    let id = req.params.id;
+    let file = req.file;
+    const room = new Room();
+    room.uploadPhoto(id, file).then((results) => {
       res.status(results.code).json(results.message);
     });
   },

@@ -6,6 +6,11 @@ const morgan = require("morgan");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const cors = require("cors");
+const passport = require("passport");
+const session = require("express-session");
+const { routeLoginToken } = require("./src/core/utils");
+
+require("./src/core/googleAuth");
 require("dotenv").config();
 
 const app = express();
@@ -23,6 +28,7 @@ const swaggerOptions = {
   apis: ["./src/modules/**/*.routes.js"],
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+let gfs;
 
 /*
  * Middlewares
@@ -40,6 +46,17 @@ app.use("/api", apiRoutes);
 
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+app.use(
+  session({
+    secret: process.env.TOKEN_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 /*
  * Main get
  */
@@ -48,6 +65,22 @@ app.get("/", (req, res) => {
   res.sendFile(indexPath);
   // res.send('hola mundo');
 });
+
+/**
+ * GOOGLE AUTH
+ */
+app.get(
+  "/google/auth",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+
+app.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "http://localhost:4200/login",
+  }),
+  (req, res) => routeLoginToken(req, res)
+);
 
 /*
  * Database connect and app listen

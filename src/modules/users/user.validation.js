@@ -29,8 +29,7 @@ const validationRules = (method) => {
           .isString()
           .withMessage("Must be a string"),
         check("cellphone")
-          .notEmpty()
-          .withMessage("Cannot be empty")
+          .optional()
           .isString()
           .withMessage("Must be a string"),
         check("email")

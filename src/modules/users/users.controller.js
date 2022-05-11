@@ -1,4 +1,5 @@
 const User = require("./user.model");
+const { getUserID } = require("../../core/utils");
 
 //Validation here
 const Controller = {
@@ -53,6 +54,13 @@ const Controller = {
     let id = req.params.id;
     const user = new User();
     user.delete(id).then((results) => {
+      res.status(results.code).json(results.message);
+    });
+  },
+  res: async (req, res) => {
+    let id = req.params.id;
+    const user = new User();
+    user.reservations(id).then((results) => {
       res.status(results.code).json(results.message);
     });
   },

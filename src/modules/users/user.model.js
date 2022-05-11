@@ -1,10 +1,10 @@
 const Model = require("../../core/model");
+const { ObjectId } = require("mongodb");
 const {
   hashPassword,
   comparePassword,
   generateToken,
 } = require("../../core/utils");
-const { ObjectId } = require("mongodb");
 
 class User extends Model {
   constructor() {
@@ -95,6 +95,19 @@ class User extends Model {
         err.message = { message: "Email is not registered" };
         throw err;
       }
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async reservations(id) {
+    try {
+      const arrayRes = await this.secondColletion
+        .find({
+          id_guest: id,
+        })
+        .toArray();
+      return { message: arrayRes, code: 200 };
     } catch (error) {
       return error;
     }
