@@ -3,9 +3,11 @@ const { ObjectId } = require("mongodb");
 
 class Model {
   collection;
+  secondColletion;
 
   constructor(collectionName) {
     this.collection = Database.collection(collectionName);
+    this.secondColletion = Database.collection("reservacion");
   }
 
   getAll() {

@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { verifyAdmin } = require("../../core/utils");
 const { validate, validationRules } = require("./room.validation");
 const controller = require("./rooms.controller");
+const upload = require("../../core/multer");
 
 /**
  * @swagger
@@ -55,7 +56,7 @@ router.post(
  *         401:
  *           description: Unauthorized
  */
-router.get("/:id", verifyAdmin, controller.getOne);
+router.get("/:id", controller.getOne);
 
 /**
  * @swagger
@@ -97,4 +98,20 @@ router.put(
   controller.update
 );
 
+/**
+ * @swagger
+ *   /api/rooms/{id}/photo:
+ *     post:
+ *       tags:
+ *       - Rooms
+ *       description: Upload room photo by id
+ *       responses:
+ *         200:
+ *           description: Confirmation message
+ *         401:
+ *           description: Unauthorized
+ *         404:
+ *           description: Room is not registered
+ */
+router.post("/:id/photo", upload.single("image"), controller.uploadPhoto);
 module.exports = router;

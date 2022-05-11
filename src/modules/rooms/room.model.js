@@ -18,8 +18,6 @@ class Room extends Model {
 
       await this.collection.insertOne({
         ...data,
-        reviews: [],
-        imgs: [],
       });
 
       return { message: { message: "Room was created" }, code: 201 };
@@ -59,6 +57,26 @@ class Room extends Model {
       await this.collection.remove({ _id: ObjectId(id) });
 
       return { message: { message: "Room was deleted" }, code: 200 };
+    } catch (error) {
+      return error;
+    }
+  }
+  async uploadPhoto(id, file) {
+    try {
+      const roomExists = await this.collection.findOne({ _id: ObjectId(id) });
+      if (!roomExists || file == undefined) {
+        var err = new Error("Error");
+        err.code = 404;
+        err.message = { message: "Room is not registered or file is empty" };
+        throw err;
+      }
+
+      await this.collection.updateOne(
+        { _id: ObjectId(id) },
+        { $set: { image: file.filename } }
+      );
+
+      return { message: { message: `Image was added` }, code: 200 };
     } catch (error) {
       return error;
     }

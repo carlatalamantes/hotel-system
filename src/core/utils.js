@@ -60,10 +60,30 @@ function verifyAdmin(req, res, next) {
   }
 }
 
+function getUserID(req) {
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+  const userId = decodedToken.id;
+  return userId;
+}
+
+function routeLoginToken(req, res) {
+  const token = req.user.token;
+  if (token !== "") {
+    return res.redirect(
+      "http://localhost:4200/login-success" + "?token=" + token
+    );
+  } else {
+    return res.redirect("http://localhost:4200/login");
+  }
+}
+
 module.exports = {
   hashPassword,
   comparePassword,
   generateToken,
   verifyToken,
   verifyAdmin,
+  getUserID,
+  routeLoginToken,
 };

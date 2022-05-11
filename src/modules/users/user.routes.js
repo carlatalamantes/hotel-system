@@ -31,7 +31,7 @@ router.get("/", verifyAdmin, controller.getAll);
  *         401:
  *           description: Unauthorized
  */
-router.get("/:id", verifyToken, controller.getOne);
+router.get("/:id", controller.getOne);
 
 /**
  * @swagger
@@ -104,5 +104,20 @@ router.put(
  *           description: User is not registered
  */
 router.delete("/:id", verifyToken, controller.delete);
+
+/**
+ * @swagger
+ *   /api/users/{id}/reservations:
+ *     get:
+ *       tags:
+ *       - Users
+ *       description: Get all reservations of specific user
+ *       responses:
+ *         200:
+ *           description: Array with all reservations of specific user
+ *         401:
+ *           description: Unauthorized
+ */
+router.get("/:id/reservations", controller.res);
 
 module.exports = router;

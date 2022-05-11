@@ -69,13 +69,7 @@ router.get("/:id", verifyToken, controller.getOne);
  *         404:
  *           description: Reservations is not registered
  */
-router.put(
-  "/:id",
-  validationRules("create"),
-  validate,
-  verifyToken,
-  controller.update
-);
+router.put("/:id", validationRules("create"), validate, controller.update);
 
 /**
  * @swagger
