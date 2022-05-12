@@ -44,6 +44,8 @@ app.use(morgan("dev"));
 
 app.use("/api", apiRoutes);
 
+app.use("/uploads", express.static(path.join(__dirname, "src/uploads")));
+
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(

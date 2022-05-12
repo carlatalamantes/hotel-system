@@ -75,6 +75,7 @@ const Controller = {
   uploadPhoto: async (req, res) => {
     let id = req.params.id;
     let file = req.file;
+    console.log(file);
     const room = new Room();
     room.uploadPhoto(id, file).then((results) => {
       res.status(results.code).json(results.message);
