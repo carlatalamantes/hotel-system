@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const path = require("path");
 const Database = require("./src/core/database");
@@ -41,11 +42,11 @@ app.use("/assets", express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
 
-if (currentenv == "dev") {
+/* if (currentenv == "dev") {
   const morgan = require("morgan");
   app.use(morgan("dev"));
 }
-
+ */
 app.use("/api", apiRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "src/uploads")));
