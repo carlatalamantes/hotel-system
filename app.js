@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const Database = require("./src/core/database");
 const apiRoutes = require("./src/routes");
-const morgan = require("morgan");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const cors = require("cors");
@@ -15,6 +14,8 @@ require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+const currentenv = process.argv[2] || "dev";
+
 const swaggerOptions = {
   swaggerDefinition: {
     swagger: "2.0",
@@ -40,7 +41,10 @@ app.use("/assets", express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
 
-app.use(morgan("dev"));
+if (currentenv == "dev") {
+  const morgan = require("morgan");
+  app.use(morgan("dev"));
+}
 
 app.use("/api", apiRoutes);
 
@@ -90,5 +94,7 @@ app.get(
 Database.connect().then(() => {
   app.listen(port, () => {
     console.log("App is listening to port " + port);
+
+    console.log(currentenv);
   });
 });
