@@ -69,7 +69,7 @@ function getUserID(req) {
 
 function routeLoginToken(req, res) {
   const token = req.user.token;
-  if ((token !== "") | (token != undefined)) {
+  if (token !== "" || token != undefined) {
     return res.redirect(
       "https://hotelsystemteamdinamita.herokuapp.com/login-success" +
         "?token=" +
