@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const Database = require("./src/core/database");
@@ -10,7 +11,6 @@ const session = require("express-session");
 const { routeLoginToken } = require("./src/core/utils");
 
 require("./src/core/googleAuth");
-require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
