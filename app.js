@@ -95,7 +95,5 @@ app.get(
 Database.connect().then(() => {
   app.listen(port, () => {
     console.log("App is listening to port " + port);
-
-    console.log(currentenv);
   });
 });

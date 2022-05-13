@@ -23,7 +23,6 @@ class Model {
   }
 
   getOne(id) {
-    console.log(".......... ", id);
     return this.collection.findOne({
       _id: ObjectId(id),
     });
