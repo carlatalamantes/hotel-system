@@ -71,10 +71,12 @@ function routeLoginToken(req, res) {
   const token = req.user.token;
   if (token !== "") {
     return res.redirect(
-      "http://localhost:4200/login-success" + "?token=" + token
+      "https://hotelsystemteamdinamita.herokuapp.com/login-success" +
+        "?token=" +
+        token
     );
   } else {
-    return res.redirect("http://localhost:4200/login");
+    return res.redirect("https://hotelsystemteamdinamita.herokuapp.com/login");
   }
 }
 

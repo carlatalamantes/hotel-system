@@ -84,7 +84,7 @@ app.get(
 app.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:4200/login",
+    failureRedirect: "https://hotelsystemteamdinamita.herokuapp.com/login",
   }),
   (req, res) => routeLoginToken(req, res)
 );
